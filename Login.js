@@ -40,7 +40,7 @@ class Login extends Component {
           onChangeText={(text) => this.setState({password: text})}
           style={styles.loginInput}
           placeholder='Github Password'
-          secureTextEntry='true' />
+          secureTextEntry={true} />
         <TouchableHighlight
           onPress={this.onLoginPressed.bind(this)}
           style={styles.button}>

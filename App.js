@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import AuthService from './AuthService'
 import Login from './Login'
+import AppContainer from './AppContainer'
 
 export default class App extends Component {
   constructor (props) {
@@ -42,9 +43,7 @@ export default class App extends Component {
 
     if(this.state.isLoggedIn) {
       return (
-        <View style={styles.container}>
-          <Text style={styles.welcome}>Logged In</Text>
-        </View>
+        <AppContainer />
       )
     } else {
       return (

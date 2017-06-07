@@ -27,7 +27,7 @@ class AuthService {
         },
         user: JSON.parse(zippedObj[userKey])
       }
-
+      console.log('multiGet successful')
       return cb (null, authInfo)
     })
   }
@@ -61,6 +61,7 @@ class AuthService {
           if(err) {
             throw err
         }
+        console.log('multiSet successful')
         return cb({success: true})
         })
       })
