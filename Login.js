@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TextInput, TouchableHighlight, ActivityIndicator } from 'react-native'
+import buffer from 'buffer'
 
 class Login extends Component {
   constructor (props) {
@@ -12,6 +13,19 @@ class Login extends Component {
   }
 
   render () {
+    let errorCtrl = <View />
+
+    if(!this.state.success && this.state.badCredentials) {
+      errorCtrl = <Text style={styles.error}>
+        That username and password combination did not work
+      </Text>
+    }
+    if(!this.state.success && this.state.unknownError) {
+      errorCtrl = <Text style={styles.error}>
+        We experienced an unexpected issue
+      </Text>
+    }
+
     return (
       <View style={styles.container}>
         <Image style={styles.logo} source={require('./images/Octocat.png')} />
@@ -20,11 +34,11 @@ class Login extends Component {
         </Text>
         <TextInput
           onChangeText={(text) => this.setState({username: text})}
-          style={styles.input}
+          style={styles.loginInput}
           placeholder='Github Username' />
         <TextInput
           onChangeText={(text) => this.setState({password: text})}
-          style={styles.input}
+          style={styles.loginInput}
           placeholder='Github Password'
           secureTextEntry='true' />
         <TouchableHighlight
@@ -34,6 +48,9 @@ class Login extends Component {
             Login
           </Text>
         </TouchableHighlight>
+
+        {errorCtrl}
+
         <ActivityIndicator
           animating={this.state.showProgress}
           size='large'
@@ -46,14 +63,19 @@ class Login extends Component {
     console.log('Attempting to log in with username ' + this.state.username)
     this.setState({ showProgress: true })
 
-    fetch('https://api.github.com/search/repositories?q=react')
-      .then((response) => {
-        return response.json()
-      })
-      .then((results) => {
-        console.log(results)
-        this.setState({ showProgress: false })
-      })
+    let authService = require('./AuthService')
+    authService.login({
+      username: this.state.username,
+      password: this.state.password
+    }, (results) => {
+      this.setState(Object.assign({
+        showProgress: false
+      }, results))
+
+      if (results.success && this.props.onLogin) {
+        this.props.onLogin()
+      }
+    })
   }
 } // end class component
 
@@ -73,7 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginTop: 10
   },
-  input: {
+  loginInput: {
     height: 50,
     marginTop: 10,
     padding: 4,
@@ -97,6 +119,9 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 20
+  },
+  error: {
+    color: 'red'
   }
 })
 
