@@ -1,7 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, TabBarIOS } from 'react-native'
+import { Text, View, StyleSheet, TabBarIOS, NavigatorIOS } from 'react-native'
 import Feed from './Feed'
 
 class AppContainer extends Component {
@@ -21,7 +21,17 @@ class AppContainer extends Component {
           icon={require('./images/inbox.png')}
           onPress={() => this.setState({ selectedTab: 'feed' })}
         >
-          <Feed />
+          <NavigatorIOS
+            style={{
+              flex: 1
+            }}
+            initialRoute={{
+              component: Feed,
+              title: 'Feed'
+            }}
+          >
+
+          </NavigatorIOS>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title='Search'
