@@ -9,15 +9,17 @@ class AuthService {
   getAuthInfo (cb) {
     AsyncStorage.multiGet([authKey, userKey], (err, val) => {
       if (err) {
+        console.log('AsyncStorage error: ', err)
         return cb(err)
       }
       if (!val) {
+        console.log('AsyncStorage no val: ', val)
         return cb()
       }
 
-      const zippedObj = _.zipObject(val)
-
+      const zippedObj = _.fromPairs(val)
       if (!zippedObj[authKey]) {
+        console.log('AsyncStorage no authKey ', zippedObj)
         return cb ()
       }
 
@@ -27,7 +29,6 @@ class AuthService {
         },
         user: JSON.parse(zippedObj[userKey])
       }
-      console.log('multiGet successful')
       return cb (null, authInfo)
     })
   }
@@ -61,7 +62,7 @@ class AuthService {
           if(err) {
             throw err
         }
-        console.log('multiSet successful')
+        console.log('multiSet successful: ', authKey, encodedAuth)
         return cb({success: true})
         })
       })

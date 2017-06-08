@@ -24,11 +24,9 @@ export default class App extends Component {
 
   onLogin () {
     this.setState({ isLoggedIn: true })
-    console.log('Successful Login!')
   }
 
   render () {
-    console.log('Logged in: ' + this.state.isLoggedIn, 'Checking Auth: ' + this.state.checkingAuth)
     if (this.state.checkingAuth) {
       return (
         <View style={styles.container}>
