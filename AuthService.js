@@ -1,6 +1,6 @@
-import buffer from 'buffer'
 import { AsyncStorage } from 'react-native'
 import _ from 'lodash'
+const encoding = require('NativeModules').Encoding
 
 const authKey = 'auth'
 const userKey = 'user'
@@ -34,14 +34,14 @@ class AuthService {
   }
 
   login (creds, cb) {
-    const b = new buffer.Buffer(creds.username + ':' + creds.password)
-    const encodedAuth = b.toString('base64')
+    const authStr = creds.username + ':' + creds.password
 
-    fetch('https://api.github.com/user', {
-      headers: {
-        'Authorization' : 'Basic ' + encodedAuth
-      }
-    })
+    encoding.base64Encode(authStr, (encodedAuth) => {
+      fetch('https://api.github.com/user', {
+        headers: {
+          'Authorization' : 'Basic ' + encodedAuth
+        }
+      })
       .then((response) => {
         if (response.status >= 200 && response.status < 300) {
           return response
@@ -61,15 +61,18 @@ class AuthService {
         ], (err) => {
           if(err) {
             throw err
-        }
-        console.log('multiSet successful: ', authKey, encodedAuth)
-        return cb({success: true})
+          }
+          console.log('multiSet successful: ', authKey, encodedAuth)
+          return cb({success: true})
         })
       })
       .catch((err) => {
         return cb(err)
       })
-  }
-}
+    })
+
+  } // end login method
+
+} // end AuthService module
 
 module.exports = new AuthService()
