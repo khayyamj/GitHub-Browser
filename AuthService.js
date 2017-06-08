@@ -62,7 +62,6 @@ class AuthService {
           if(err) {
             throw err
           }
-          console.log('multiSet successful: ', authKey, encodedAuth)
           return cb({success: true})
         })
       })
