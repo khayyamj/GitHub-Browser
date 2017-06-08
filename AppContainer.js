@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, TabBarIOS, NavigatorIOS } from 'react-native'
 import Feed from './Feed'
+import Search from './Search'
 
 class AppContainer extends Component {
   constructor (props) {
@@ -30,7 +31,6 @@ class AppContainer extends Component {
               title: 'Feed'
             }}
           >
-
           </NavigatorIOS>
         </TabBarIOS.Item>
         <TabBarIOS.Item
@@ -39,7 +39,16 @@ class AppContainer extends Component {
           icon={require('./images/search.png')}
           onPress={() => this.setState({ selectedTab: 'search' })}
         >
-          <Text style={styles.welcome}>Tab 2</Text>
+          <NavigatorIOS
+            style={{
+              flex: 1
+            }}
+            initialRoute={{
+              component: Search,
+              title: 'Search'
+            }}
+          >
+          </NavigatorIOS>
         </TabBarIOS.Item>
       </TabBarIOS>
     )
@@ -48,18 +57,12 @@ class AppContainer extends Component {
 } // end of AppContainer class
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    justifyContent: 'center',
-    margin: 10,
-  }
+  // container: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: '#F5FCFF',
+  // }
 });
 
 export default AppContainer

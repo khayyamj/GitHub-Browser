@@ -30,7 +30,6 @@ class Feed extends Component {
       .then((response) => response.json())
       .then((responseData) => {
         const feedItems = responseData.filter ((ev) => ev.type === 'PushEvent')
-        console.log('responseData: ', responseData, 'feedItems: ', feedItems)
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(feedItems),
           showProgress: false
@@ -40,7 +39,6 @@ class Feed extends Component {
   }
 
   pressRow(rowData) {
-    console.log('pressRow ->', rowData)
     this.props.navigator.push({
       title: 'Push Event',
       component: PushPayload,
@@ -62,7 +60,8 @@ class Feed extends Component {
           padding: 20,
           alignItems: 'center',
           borderColor: '#D7D7D7',
-          borderBottomWidth: 1
+          borderBottomWidth: 1,
+          backgroundColor: '#FFF'
         }}>
           <Image
             source={{uri: rowData.actor.avatar_url}}
@@ -114,7 +113,8 @@ class Feed extends Component {
     return (
       <View style={{
         flex: 1,
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        marginTop: 50
       }}>
         <ListView
           dataSource={this.state.dataSource}
